@@ -1,0 +1,11 @@
+{
+    "name": "esko/betteraltay-p",
+    "description": "esko and petter altay protocol to not kill my self changing both",
+    "type": "library",
+    "license": "GPL-3.0",
+    "autoload": {
+        "psr-4": {
+            "pocketmine\\network\\mcpe\\protocol\\": "src/"
+        }
+    }
+}
