@@ -23,40 +23,49 @@ declare(strict_types=1);
 
 namespace pocketmine\network\mcpe\protocol;
 
-#include <rules/DataPacket.h>
-
 use pocketmine\network\mcpe\NetworkSession;
 
-class RemoveVolumeEntityPacket extends DataPacket{
-	public const NETWORK_ID = ProtocolInfo::REMOVE_VOLUME_ENTITY_PACKET;
+class AgentActionEventPacket extends DataPacket{
+	public const NETWORK_ID = ProtocolInfo::AGENT_ACTION_EVENT_PACKET;
 
+	/** @var string */
+	private $requestId;
 	/** @var int */
-	private $entityNetId;
-	/** @var int */
-	private $dimension;
+	private $action;
+	/** @var string */
+	private $responseJson;
 
-	public static function create(int $entityNetId, int $dimension) : self{
+	/**
+	 * @generate-create-func
+	 */
+	public static function create(string $requestId, int $action, string $responseJson) : self{
 		$result = new self;
-		$result->entityNetId = $entityNetId;
-		$result->dimension = $dimension;
+		$result->requestId = $requestId;
+		$result->action = $action;
+		$result->responseJson = $responseJson;
 		return $result;
 	}
 
-	public function getEntityNetId() : int{ return $this->entityNetId; }
-	
-	public function getDimension() : int{ return $this->dimension; }
+	public function getRequestId() : string{ return $this->requestId; }
+
+	/** @see AgentActionType */
+	public function getAction() : int{ return $this->action; }
+
+	public function getResponseJson() : string{ return $this->responseJson; }
 
 	protected function decodePayload() : void{
-		$this->entityNetId = $this->getUnsignedVarInt();
-		$this->dimension = $this->getVarInt();
+		$this->requestId = $this->getString();
+		$this->action = $this->getLInt();
+		$this->responseJson = $this->getString();
 	}
 
 	protected function encodePayload() : void{
-		$this->putUnsignedVarInt($this->entityNetId);
-		$this->writeVarInt($this->dimension);
+		$this->putString($this->requestId);
+		$this->putLInt($this->action);
+		$this->putString($this->responseJson);
 	}
 
 	public function handle(NetworkSession $handler) : bool{
-		return $handler->handleRemoveVolumeEntity($this);
+		return $handler->handleAgentActionEvent($this);
 	}
 }
