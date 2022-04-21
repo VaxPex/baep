@@ -23,37 +23,45 @@ declare(strict_types=1);
 
 namespace pocketmine\network\mcpe\protocol;
 
-#include <rules/DataPacket.h>
-
 use pocketmine\network\mcpe\NetworkSession;
 
-class RemoveVolumeEntityPacket extends DataPacket{
-	public const NETWORK_ID = ProtocolInfo::REMOVE_VOLUME_ENTITY_PACKET;
+class CodeBuilderSourcePacket extends DataPacket{
+	public const NETWORK_ID = ProtocolInfo::CODE_BUILDER_SOURCE_PACKET;
 
-	/** @var int */
-	private $entityNetId;
-	/** @var int */
-	private $dimension;
+	private int $operation;
+	private int $category;
+	private string $value;
 
-	public static function create(int $entityNetId) : self{
+	/**
+	 * @generate-create-func
+	 */
+	public static function create(int $operation, int $category, string $value) : self{
 		$result = new self;
-		$result->entityNetId = $entityNetId;
+		$result->operation = $operation;
+		$result->category = $category;
+		$result->value = $value;
 		return $result;
 	}
 
-	public function getEntityNetId() : int{ return $this->entityNetId; }
+	public function getOperation() : int{ return $this->operation; }
+
+	public function getCategory() : int{ return $this->category; }
+
+	public function getValue() : string{ return $this->value; }
 
 	protected function decodePayload() : void{
-		$this->entityNetId = $this->getUnsignedVarInt();
-		$this->dimension = $this->getVarInt();
+		$this->operation = $this->getByte();
+		$this->category = $this->getByte();
+		$this->value = $this->getString();
 	}
 
 	protected function encodePayload() : void{
-		$this->putUnsignedVarInt($this->entityNetId);
-		$this->writeVarInt($this->dimension);
+		$this->putByte($this->operation);
+		$this->putByte($this->category);
+		$this->putString($this->value);
 	}
 
 	public function handle(NetworkSession $handler) : bool{
-		return $handler->handleRemoveVolumeEntity($this);
+		return $handler->handleCodeBuilderSource($this);
 	}
 }

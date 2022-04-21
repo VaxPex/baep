@@ -23,37 +23,40 @@ declare(strict_types=1);
 
 namespace pocketmine\network\mcpe\protocol;
 
-#include <rules/DataPacket.h>
-
 use pocketmine\network\mcpe\NetworkSession;
 
-class RemoveVolumeEntityPacket extends DataPacket{
-	public const NETWORK_ID = ProtocolInfo::REMOVE_VOLUME_ENTITY_PACKET;
+class PlayerStartItemCooldownPacket extends DataPacket{
 
-	/** @var int */
-	private $entityNetId;
-	/** @var int */
-	private $dimension;
+	public const NETWORK_ID = ProtocolInfo::PLAYER_START_ITEM_COOLDOWN_PACKET;
 
-	public static function create(int $entityNetId) : self{
+	private string $itemCategory;
+	private int $cooldownTicks;
+
+	/**
+	 * @generate-create-func
+	 */
+	public static function create(string $itemCategory, int $cooldownTicks) : self{
 		$result = new self;
-		$result->entityNetId = $entityNetId;
+		$result->itemCategory = $itemCategory;
+		$result->cooldownTicks = $cooldownTicks;
 		return $result;
 	}
 
-	public function getEntityNetId() : int{ return $this->entityNetId; }
+	public function getItemCategory() : string{ return $this->itemCategory; }
+
+	public function getCooldownTicks() : int{ return $this->cooldownTicks; }
 
 	protected function decodePayload() : void{
-		$this->entityNetId = $this->getUnsignedVarInt();
-		$this->dimension = $this->getVarInt();
+		$this->itemCategory = $this->getString();
+		$this->cooldownTicks = $this->getVarInt();
 	}
 
 	protected function encodePayload() : void{
-		$this->putUnsignedVarInt($this->entityNetId);
-		$this->writeVarInt($this->dimension);
+		$this->putString($this->itemCategory);
+		$this->putVarInt($this->cooldownTicks);
 	}
 
-	public function handle(NetworkSession $handler) : bool{
-		return $handler->handleRemoveVolumeEntity($this);
+	public function handle(NetworkSession $handler): bool{
+		return $handler->handlePlayerStartItemCooldown();
 	}
 }

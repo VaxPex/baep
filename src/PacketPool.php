@@ -206,6 +206,12 @@ class PacketPool{
 		static::registerPacket(new PhotoInfoRequestPacket());
 		static::registerPacket(new SubChunkPacket());
 		static::registerPacket(new SubChunkRequestPacket());
+		static::registerPacket(new PlayerStartItemCooldownPacket());
+		static::registerPacket(new ScriptMessagePacket());
+		static::registerPacket(new CodeBuilderSourcePacket());
+		//TODO: AgentActionEventPacket
+		//TODO: ChangeMobPropertyPacket
+		//TODO: DimensionDataPacket
 	}
 
 	/**
