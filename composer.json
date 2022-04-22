@@ -1,6 +1,6 @@
 {
     "name": "esko/betteraltay-p",
-    "description": "esko and petter altay protocol to not kill my self changing both",
+    "description": "Esko and BetterAltay protocol to not kill myself changing both",
     "type": "library",
     "license": "GPL-3.0",
     "require": {
