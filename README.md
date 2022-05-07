@@ -1,2 +1,2 @@
 # baep
-betteraltay and esko protocol to not kill my self changing both
+BetterAltay and Esko protocol to not kill myself changing both
