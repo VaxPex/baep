@@ -23,13 +23,33 @@ declare(strict_types=1);
 
 namespace pocketmine\network\mcpe\protocol\types;
 
-final class GameRuleType{
+use pocketmine\network\mcpe\NetworkBinaryStream;
 
-	private function __construct(){
-		//NOOP
+final class SubChunkPosition{
+
+	public function __construct(
+		private int $x,
+		private int $y,
+		private int $z,
+	){}
+
+	public function getX() : int{ return $this->x; }
+
+	public function getY() : int{ return $this->y; }
+
+	public function getZ() : int{ return $this->z; }
+
+	public static function read(NetworkBinaryStream $in) : self{
+		$x = $in->getVarInt();
+		$y = $in->getVarInt();
+		$z = $in->getVarInt();
+
+		return new self($x, $y, $z);
 	}
 
-	public const BOOL = 1;
-	public const INT = 2;
-	public const FLOAT = 3;
+	public function write(NetworkBinaryStream $out) : void{
+		$out->putVarInt($this->x);
+		$out->putVarInt($this->y);
+		$out->putVarInt($this->z);
+	}
 }

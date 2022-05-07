@@ -25,31 +25,26 @@ namespace pocketmine\network\mcpe\protocol\types;
 
 use pocketmine\network\mcpe\NetworkBinaryStream;
 
-final class DimensionData {
+final class SubChunkPacketEntryWithCache{
 
 	public function __construct(
-		private int $maxHeight,
-		private int $minHeight,
-		private int $generator
+		private SubChunkPacketEntryCommon $base,
+		private int $usedBlobHash
 	){}
 
-	public function getMaxHeight() : int{ return $this->maxHeight; }
+	public function getBase() : SubChunkPacketEntryCommon{ return $this->base; }
 
-	public function getMinHeight() : int{ return $this->minHeight; }
+	public function getUsedBlobHash() : int{ return $this->usedBlobHash; }
 
-	public function getGenerator() : int{ return $this->generator; }
+	public static function read(NetworkBinaryStream $in) : self{
+		$base = SubChunkPacketEntryCommon::read($in, true);
+		$usedBlobHash = $in->getLLong();
 
-	public static function read(NetworkBinaryStream $stream) : self{
-		$maxHeight = $stream->getVarInt();
-		$minHeight = $stream->getVarInt();
-		$generator = $stream->getVarInt();
-
-		return new self($maxHeight, $minHeight, $generator);
+		return new self($base, $usedBlobHash);
 	}
 
-	public function write(NetworkBinaryStream $stream) : void{
-		$stream->putVarInt($this->maxHeight);
-		$stream->putVarInt($this->minHeight);
-		$stream->putVarInt($this->generator);
+	public function write(NetworkBinaryStream $out) : void{
+		$this->base->write($out, true);
+		$out->putLLong($this->usedBlobHash);
 	}
 }

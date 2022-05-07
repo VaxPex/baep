@@ -23,13 +23,21 @@ declare(strict_types=1);
 
 namespace pocketmine\network\mcpe\protocol\types;
 
-final class GameRuleType{
+use pocketmine\network\mcpe\NetworkBinaryStream;
 
-	private function __construct(){
-		//NOOP
+final class SubChunkPacketEntryWithoutCache{
+
+	public function __construct(
+		private SubChunkPacketEntryCommon $base
+	){}
+
+	public function getBase() : SubChunkPacketEntryCommon{ return $this->base; }
+
+	public static function read(NetworkBinaryStream $in) : self{
+		return new self(SubChunkPacketEntryCommon::read($in, false));
 	}
 
-	public const BOOL = 1;
-	public const INT = 2;
-	public const FLOAT = 3;
+	public function write(NetworkBinaryStream $out) : void{
+		$this->base->write($out, false);
+	}
 }

@@ -23,13 +23,17 @@ declare(strict_types=1);
 
 namespace pocketmine\network\mcpe\protocol\types;
 
-final class GameRuleType{
+final class SubChunkPacketEntryWithCacheList{
 
-	private function __construct(){
-		//NOOP
-	}
+	/**
+	 * @param SubChunkPacketEntryWithCache[] $entries
+	 */
+	public function __construct(
+		private array $entries
+	){}
 
-	public const BOOL = 1;
-	public const INT = 2;
-	public const FLOAT = 3;
+	/**
+	 * @return SubChunkPacketEntryWithCache[]
+	 */
+	public function getEntries() : array{ return $this->entries; }
 }

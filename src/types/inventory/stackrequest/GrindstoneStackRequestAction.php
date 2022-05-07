@@ -20,17 +20,14 @@ use pocketmine\network\mcpe\NetworkBinaryStream;
  * Repair and/or remove enchantments from an item in a grindstone.
  */
 final class GrindstoneStackRequestAction extends ItemStackRequestAction{
-
-    public const ID = ItemStackRequestActionType::CRAFTING_GRINDSTONE;
+	public static function getTypeId() : int{
+		return ItemStackRequestActionType::CRAFTING_GRINDSTONE;
+	}
 
 	public function __construct(
 		private int $recipeId,
 		private int $repairCost
 	){}
-
-    public static function getTypeId(): int {
-        return self::ID;
-    }
 
 	public function getRecipeId() : int{ return $this->recipeId; }
 
