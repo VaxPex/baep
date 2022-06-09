@@ -225,5 +225,6 @@ interface ProtocolInfo{
 	public const DIMENSION_DATA_PACKET = 0xb4;
 	public const AGENT_ACTION_EVENT_PACKET = 0xb5;
 	public const CHANGE_MOB_PROPERTY_PACKET = 0xb6;
+	public const TOAST_REQUEST_PACKET = 0xba;
 
 }
