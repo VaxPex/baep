@@ -39,7 +39,7 @@ class ToastRequestPacket extends DataPacket {
         }
   
         public function encodePayload() {
-               $this->writeString($this->text);
-               $this->writeString($this->body);
+               $this->putString($this->text);
+               $this->putString($this->body);
         }
 }
