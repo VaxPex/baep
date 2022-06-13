@@ -53,6 +53,8 @@ class PlayerAuthInputPacket extends DataPacket/* implements ServerboundPacket*/{
 	private $inputMode;
 	/** @var int */
 	private $playMode;
+	/** @var int */
+	private $interactionMode;
 	/** @var Vector3|null */
 	private $vrGazeDirection = null;
 	/** @var int */
@@ -66,7 +68,7 @@ class PlayerAuthInputPacket extends DataPacket/* implements ServerboundPacket*/{
 	 * @param int          $playMode @see PlayMode
 	 * @param Vector3|null $vrGazeDirection only used when PlayMode::VR
 	 */
-	public static function create(Vector3 $position, float $pitch, float $yaw, float $headYaw, float $moveVecX, float $moveVecZ, int $inputFlags, int $inputMode, int $playMode, ?Vector3 $vrGazeDirection, int $tick, Vector3 $delta) : self{
+	public static function create(Vector3 $position, float $pitch, float $yaw, float $headYaw, float $moveVecX, float $moveVecZ, int $inputFlags, int $inputMode, int $playMode, int $interactionMode, ?Vector3 $vrGazeDirection, int $tick, Vector3 $delta) : self{
 		if($playMode === PlayMode::VR and $vrGazeDirection === null){
 			//yuck, can we get a properly written packet just once? ...
 			throw new \InvalidArgumentException("Gaze direction must be provided for VR play mode");
@@ -81,6 +83,7 @@ class PlayerAuthInputPacket extends DataPacket/* implements ServerboundPacket*/{
 		$result->inputFlags = $inputFlags;
 		$result->inputMode = $inputMode;
 		$result->playMode = $playMode;
+		$result->interactionMode = $interactionMode;
 		if($vrGazeDirection !== null){
 			$result->vrGazeDirection = $vrGazeDirection->asVector3();
 		}
@@ -134,6 +137,10 @@ class PlayerAuthInputPacket extends DataPacket/* implements ServerboundPacket*/{
 		return $this->playMode;
 	}
 
+	public function getInteractionMode(): int{
+		return $this->interactionMode;
+	}
+
 	public function getVrGazeDirection() : ?Vector3{
 		return $this->vrGazeDirection;
 	}
@@ -152,6 +159,7 @@ class PlayerAuthInputPacket extends DataPacket/* implements ServerboundPacket*/{
 		$this->inputFlags = $this->getUnsignedVarLong();
 		$this->inputMode = $this->getUnsignedVarInt();
 		$this->playMode = $this->getUnsignedVarInt();
+		$this->interactionMode = $this->getUnsignedVarInt();
 		if($this->playMode === PlayMode::VR){
 			$this->vrGazeDirection = $this->getVector3();
 		}
@@ -169,6 +177,7 @@ class PlayerAuthInputPacket extends DataPacket/* implements ServerboundPacket*/{
 		$this->putUnsignedVarLong($this->inputFlags);
 		$this->putUnsignedVarInt($this->inputMode);
 		$this->putUnsignedVarInt($this->playMode);
+		$this->putUnsignedVarInt($this->interactionMode);
 		if($this->playMode === PlayMode::VR){
 			assert($this->vrGazeDirection !== null);
 			$this->putVector3($this->vrGazeDirection);

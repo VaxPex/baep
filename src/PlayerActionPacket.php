@@ -58,6 +58,8 @@ class PlayerActionPacket extends DataPacket{
 	public const ACTION_INTERACT_BLOCK = 25;
 	public const ACTION_PREDICT_DESTROY_BLOCK = 26;
 	public const ACTION_CONTINUE_DESTROY_BLOCK = 27;
+	public const ACTION_START_ITEM_USE_ON = 28;
+	public const ACTION_STOP_ITEM_USE_ON = 29;
 
 	/** @var int */
 	public $entityRuntimeId;
@@ -70,12 +72,20 @@ class PlayerActionPacket extends DataPacket{
 	/** @var int */
 	public $z;
 	/** @var int */
+	/** @var int */
+	public $resultX;
+	/** @var int */
+	public $resultY;
+	/** @var int */
+	public $resultZ;
+	/** @var int */
 	public $face;
 
 	protected function decodePayload(){
 		$this->entityRuntimeId = $this->getEntityRuntimeId();
 		$this->action = $this->getVarInt();
 		$this->getBlockPosition($this->x, $this->y, $this->z);
+		$this->getBlockPosition($this->resultX, $this->resultY, $this->resultZ);
 		$this->face = $this->getVarInt();
 	}
 
@@ -83,6 +93,7 @@ class PlayerActionPacket extends DataPacket{
 		$this->putEntityRuntimeId($this->entityRuntimeId);
 		$this->putVarInt($this->action);
 		$this->putBlockPosition($this->x, $this->y, $this->z);
+		$this->putBlockPosition($this->resultX, $this->resultY, $this->resultZ);
 		$this->putVarInt($this->face);
 	}
 

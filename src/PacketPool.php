@@ -212,6 +212,9 @@ class PacketPool{
 		static::registerPacket(new AgentActionEventPacket());
 		static::registerPacket(new ChangeMobPropertyPacket());
 		static::registerPacket(new DimensionDataPacket());
+		static::registerPacket(new LessonProgressPacket());
+		static::registerPacket(new RequestAbilityPacket());
+		static::registerPacket(new RequestPermissionsPacket());
 		static::registerPacket(new ToastRequestPacket());
 	}
 
