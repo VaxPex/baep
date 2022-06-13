@@ -184,7 +184,7 @@ class StartGamePacket extends DataPacket{
 	/** @var string */
 	public $serverSoftwareVersion;
 
-	public NetworkLittleEndianNBTStream $playerActorProperites;
+	public string $playerActorProperites;
 
 	public int $blockPaletteChecksum;
 
@@ -273,7 +273,7 @@ class StartGamePacket extends DataPacket{
 		$this->multiplayerCorrelationId = $this->getString();
 		$this->enableNewInventorySystem = $this->getBool();
 		$this->serverSoftwareVersion = $this->getString();
-		$this->playerActorProperites = new NetworkLittleEndianNBTStream($this->getNbtCompoundRoot());
+		// $this->playerActorProperites = new NetworkLittleEndianNBTStream($this->getNbtCompoundRoot());
 		$this->blockPaletteChecksum = $this->getLLong();
 		$this->worldTemplateId = $this->getUUID();
 	}
@@ -357,7 +357,7 @@ class StartGamePacket extends DataPacket{
 		$this->putString($this->multiplayerCorrelationId);
 		$this->putBool($this->enableNewInventorySystem);
 		$this->putString($this->serverSoftwareVersion);
-		$this->put($this->playerActorProperites->write(new CompoundTag()));
+		$this->put($this->playerActorProperites);
 		$this->putLLong($this->blockPaletteChecksum);
 		$this->putUUID($this->worldTemplateId);
 	}
