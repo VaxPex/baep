@@ -23,38 +23,33 @@ declare(strict_types=1);
 
 namespace pocketmine\network\mcpe\protocol\types;
 
-class Cape{
-	/** @var string */
-	private $id;
-	/** @var bool */
-	private $onClassicSkin;
-	/** @var SkinImage */
-	private $image;
+use pocketmine\network\mcpe\NetworkBinaryStream;
 
-	public function __construct(string $id, SkinImage $image, bool $onClassicSkin = false){
-		$this->id = $id;
-		$this->image = $image;
-		$this->onClassicSkin = $onClassicSkin;
+final class SubChunkPosition{
+
+	public function __construct(
+		private int $x,
+		private int $y,
+		private int $z,
+	){}
+
+	public function getX() : int{ return $this->x; }
+
+	public function getY() : int{ return $this->y; }
+
+	public function getZ() : int{ return $this->z; }
+
+	public static function read(NetworkBinaryStream $in) : self{
+		$x = $in->getVarInt();
+		$y = $in->getVarInt();
+		$z = $in->getVarInt();
+
+		return new self($x, $y, $z);
 	}
 
-	/**
-	 * @return SkinImage
-	 */
-	public function getImage() : SkinImage{
-		return $this->image;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getId() : string{
-		return $this->id;
-	}
-
-	/**
-	 * @return bool
-	 */
-	public function isOnClassicSkin() : bool{
-		return $this->onClassicSkin;
+	public function write(NetworkBinaryStream $out) : void{
+		$out->putVarInt($this->x);
+		$out->putVarInt($this->y);
+		$out->putVarInt($this->z);
 	}
 }

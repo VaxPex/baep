@@ -155,9 +155,9 @@ class AddActorPacket extends DataPacket{
 		EntityIds::PIGLIN => "minecraft:piglin",
 		EntityIds::HOGLIN => "minecraft:hoglin",
 		EntityIds::ZOGLIN => "minecraft:zoglin",
-
+		
 	];
-
+	
 	/** @var int|null */
 	public $entityUniqueId = null; //TODO
 	/** @var int */

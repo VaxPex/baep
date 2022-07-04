@@ -23,33 +23,17 @@ declare(strict_types=1);
 
 namespace pocketmine\network\mcpe\protocol\types;
 
-use pocketmine\network\mcpe\NetworkBinaryStream;
+final class SubChunkPacketEntryWithCacheList{
 
-final class DimensionData {
-
+	/**
+	 * @param SubChunkPacketEntryWithCache[] $entries
+	 */
 	public function __construct(
-		private int $maxHeight,
-		private int $minHeight,
-		private int $generator
+		private array $entries
 	){}
 
-	public function getMaxHeight() : int{ return $this->maxHeight; }
-
-	public function getMinHeight() : int{ return $this->minHeight; }
-
-	public function getGenerator() : int{ return $this->generator; }
-
-	public static function read(NetworkBinaryStream $stream) : self{
-		$maxHeight = $stream->getVarInt();
-		$minHeight = $stream->getVarInt();
-		$generator = $stream->getVarInt();
-
-		return new self($maxHeight, $minHeight, $generator);
-	}
-
-	public function write(NetworkBinaryStream $stream) : void{
-		$stream->putVarInt($this->maxHeight);
-		$stream->putVarInt($this->minHeight);
-		$stream->putVarInt($this->generator);
-	}
+	/**
+	 * @return SubChunkPacketEntryWithCache[]
+	 */
+	public function getEntries() : array{ return $this->entries; }
 }

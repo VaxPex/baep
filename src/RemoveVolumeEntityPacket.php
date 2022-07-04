@@ -43,7 +43,7 @@ class RemoveVolumeEntityPacket extends DataPacket{
 	}
 
 	public function getEntityNetId() : int{ return $this->entityNetId; }
-	
+
 	public function getDimension() : int{ return $this->dimension; }
 
 	protected function decodePayload() : void{

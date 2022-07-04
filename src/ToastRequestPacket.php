@@ -23,27 +23,29 @@ declare(strict_types=1);
 
 namespace pocketmine\network\mcpe\protocol;
 
-use pocketmine\network\mcpe\NetworkSession;
-
 #include <rules/DataPacket.h>
 
-class ToastRequestPacket extends DataPacket {
-        public const NETWORK_ID = ProtocolInfo::TOAST_REQUEST_PACKET;
-  
-        public string $text = "";
-        public string $body = "";
-  
-        public function decodePayload() {
-                $this->text = $this->getString();
-                $this->body = $this->getString();
-        }
-  
-        public function encodePayload() {
-               $this->putString($this->text);
-               $this->putString($this->body);
-        }
+use pocketmine\network\mcpe\NetworkSession;
 
-        public function handle(NetworkSession $handler) : bool {
-                return $handler->handleToastRequestPacket($this);
-        }
+class ToastRequestPacket extends DataPacket{
+	public const NETWORK_ID = ProtocolInfo::TOAST_REQUEST_PACKET;
+	
+	/** @var string  */
+	public string $title = "";
+	/** @var string  */
+	public string $content = "";
+	
+	protected function decodePayload(){
+		$this->title = $this->getString();
+		$this->content = $this->getString();
+	}
+	
+	protected function encodePayload(){
+		$this->putString($this->title);
+		$this->putString($this->content);
+	}
+	
+	public function handle(NetworkSession $session) : bool{
+		return $session->handleToastRequest($this);
+	}
 }
