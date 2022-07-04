@@ -100,7 +100,7 @@ class CraftingDataPacket extends DataPacket{
 					$entry["uuid"] = $this->getUUID()->toString();
 					$entry["block"] = $this->getString();
 					$entry["priority"] = $this->getVarInt();
-					$entry["net_id"] = $this->getUnsignedVarInt();
+					$entry["net_id"] = $this->readGenericTypeNetworkId();
 
 					break;
 				case self::ENTRY_SHAPED:
@@ -122,7 +122,7 @@ class CraftingDataPacket extends DataPacket{
 					$entry["uuid"] = $this->getUUID()->toString();
 					$entry["block"] = $this->getString();
 					$entry["priority"] = $this->getVarInt();
-					$entry["net_id"] = $this->getUnsignedVarInt();
+					$entry["net_id"] = $this->readGenericTypeNetworkId();
 
 					break;
 				case self::ENTRY_FURNACE:
@@ -144,7 +144,7 @@ class CraftingDataPacket extends DataPacket{
 					break;
 				case self::ENTRY_MULTI:
 					$entry["uuid"] = $this->getUUID()->toString();
-					$entry["net_id"] = $this->getUnsignedVarInt();
+					$entry["net_id"] = $this->readGenericTypeNetworkId();
 					break;
 				default:
 					throw new \UnexpectedValueException("Unhandled recipe type $recipeType!"); //do not continue attempting to decode
@@ -219,7 +219,7 @@ class CraftingDataPacket extends DataPacket{
 		$stream->put(str_repeat("\x00", 16)); //Null UUID
 		$stream->putString("crafting_table"); //TODO: blocktype (no prefix) (this might require internal API breaks)
 		$stream->putVarInt(50); //TODO: priority
-		$stream->putUnsignedVarInt($pos); //TODO: ANOTHER recipe ID, only used on the network
+		$stream->writeGenericTypeNetworkId($pos); //TODO: ANOTHER recipe ID, only used on the network
 
 		return CraftingDataPacket::ENTRY_SHAPELESS;
 	}
@@ -244,7 +244,7 @@ class CraftingDataPacket extends DataPacket{
 		$stream->put(str_repeat("\x00", 16)); //Null UUID
 		$stream->putString("crafting_table"); //TODO: blocktype (no prefix) (this might require internal API breaks)
 		$stream->putVarInt(50); //TODO: priority
-		$stream->putUnsignedVarInt($pos); //TODO: ANOTHER recipe ID, only used on the network
+		$stream->writeGenericTypeNetworkId($pos); //TODO: ANOTHER recipe ID, only used on the network
 
 		return CraftingDataPacket::ENTRY_SHAPED;
 	}

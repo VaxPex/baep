@@ -40,8 +40,7 @@ class SpawnParticleEffectPacket extends DataPacket{
 	public $position;
 	/** @var string */
 	public $particleName;
-	/** @var string */
-	public $molangVariables;
+	public string $molangVariables;
 
 	protected function decodePayload(){
 		$this->dimensionId = $this->getByte();

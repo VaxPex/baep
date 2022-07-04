@@ -21,27 +21,30 @@
 
 declare(strict_types=1);
 
-namespace pocketmine\network\mcpe\protocol\types\inventory\stackrequest;
+namespace pocketmine\network\mcpe\protocol\types;
 
 use pocketmine\network\mcpe\NetworkBinaryStream;
 
-trait CraftRecipeStackRequestActionTrait{
+final class SubChunkPacketEntryWithCache{
 
-	/** @var int */
-	private $recipeId;
+	public function __construct(
+		private SubChunkPacketEntryCommon $base,
+		private int $usedBlobHash
+	){}
 
-	final public function __construct(int $recipeId){
-		$this->recipeId = $recipeId;
-	}
+	public function getBase() : SubChunkPacketEntryCommon{ return $this->base; }
 
-	public function getRecipeId() : int{ return $this->recipeId; }
+	public function getUsedBlobHash() : int{ return $this->usedBlobHash; }
 
 	public static function read(NetworkBinaryStream $in) : self{
-		$recipeId = $in->readGenericTypeNetworkId();
-		return new self($recipeId);
+		$base = SubChunkPacketEntryCommon::read($in, true);
+		$usedBlobHash = $in->getLLong();
+
+		return new self($base, $usedBlobHash);
 	}
 
 	public function write(NetworkBinaryStream $out) : void{
-		$out->writeGenericTypeNetworkId($this->recipeId);
+		$this->base->write($out, true);
+		$out->putLLong($this->usedBlobHash);
 	}
 }

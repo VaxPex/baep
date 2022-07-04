@@ -82,18 +82,8 @@ class LevelEventPacket extends DataPacket{
 	public const EVENT_PARTICLE_BLOCK_FORCE_FIELD = 2008;
 	public const EVENT_PARTICLE_PROJECTILE_HIT = 2009;
 
-	public const EVENT_PARTICLE_PORTAL = 2010;
-
-	public const EVENT_PARTICLE_PROJECTILE_HURT = 2012;
 	public const EVENT_PARTICLE_ENDERMAN_TELEPORT = 2013;
 	public const EVENT_PARTICLE_PUNCH_BLOCK = 2014;
-	public const EVENT_PARTICLE_BUBBLES = 2015;
-
-	public const EVENT_PARTICLE_ARMOR_STAND_DESTROY = 2017;
-	public const EVENT_PARTICLE_DESTROY_MINI = 2021; //data: block runtime id
-	public const EVENT_PARTICLE_KNOCKBACK_ROAR = 2022;
-
-	public const EVENT_PARTICLE_EXPLOSION = 2025;
 
 	public const EVENT_START_RAIN = 3001;
 	public const EVENT_START_THUNDER = 3002;
@@ -113,10 +103,6 @@ class LevelEventPacket extends DataPacket{
 	public const EVENT_CAULDRON_TAKE_WATER = 3507;
 	public const EVENT_CAULDRON_ADD_DYE = 3508;
 	public const EVENT_CAULDRON_CLEAN_BANNER = 3509;
-	public const EVENT_CAULDRON_FLUSH = 3510; //data: Color ARGB
-	public const EVENT_AGENT_CREATE = 3511;
-	public const EVENT_CAULDRON_FILL_LAVA = 3512;
-	public const EVENT_CAULDRON_TAKE_LAVA = 3513;
 
 	public const EVENT_BLOCK_START_BREAK = 3600;
 	public const EVENT_BLOCK_STOP_BREAK = 3601;

@@ -89,9 +89,9 @@ class ClientboundMapItemDataPacket extends DataPacket{
 			for($i = 0, $count = $this->getUnsignedVarInt(); $i < $count; ++$i){
 				$object = new MapTrackedObject();
 				$object->type = $this->getLInt();
-				if($object->type > MapTrackedObject::TYPE_PLAYER){
+				if($object->type === MapTrackedObject::TYPE_BLOCK){
 					$this->getBlockPosition($object->x, $object->y, $object->z);
-				}elseif($object->type === MapTrackedObject::TYPE_PLAYER){
+				}elseif($object->type === MapTrackedObject::TYPE_ENTITY){
 					$object->entityUniqueId = $this->getEntityUniqueId();
 				}else{
 					throw new \UnexpectedValueException("Unknown map object type $object->type");
@@ -162,9 +162,9 @@ class ClientboundMapItemDataPacket extends DataPacket{
 			$this->putUnsignedVarInt(count($this->trackedEntities));
 			foreach($this->trackedEntities as $object){
 				$this->putLInt($object->type);
-				if($object->type > MapTrackedObject::TYPE_PLAYER){
+				if($object->type === MapTrackedObject::TYPE_BLOCK){
 					$this->putBlockPosition($object->x, $object->y, $object->z);
-				}elseif($object->type === MapTrackedObject::TYPE_PLAYER){
+				}elseif($object->type === MapTrackedObject::TYPE_ENTITY){
 					$this->putEntityUniqueId($object->entityUniqueId);
 				}else{
 					throw new \InvalidArgumentException("Unknown map object type $object->type");
@@ -192,28 +192,10 @@ class ClientboundMapItemDataPacket extends DataPacket{
 
 			for($y = 0; $y < $this->height; ++$y){
 				for($x = 0; $x < $this->width; ++$x){
-					//if mojang had any sense this would just be a regular LE int
 					$this->putUnsignedVarInt($this->colors[$y][$x]->toABGR());
 				}
 			}
 		}
-	}
-
-	/**
-	 * Crops the texture to wanted size
-	 */
-	public function cropTexture(int $minX, int $minY, int $maxX, int $maxY) : void{
-		$this->height = $maxY;
-		$this->width = $maxX;
-		$this->xOffset = $minX;
-		$this->yOffset = $minY;
-		$newColors = [];
-		for($y = 0; $y < $maxY; $y++){
-			for($x = 0; $x < $maxX; $x++){
-				$newColors[$y][$x] = $this->colors[$minY + $y][$minX + $x];
-			}
-		}
-		$this->colors = $newColors;
 	}
 
 	public function handle(NetworkSession $session) : bool{

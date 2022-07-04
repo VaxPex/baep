@@ -43,13 +43,6 @@ class AddActorPacket extends DataPacket{
 	 * TODO: remove this on 4.0
 	 */
 	public const LEGACY_ID_MAP_BC = [
-		//NEW
-		EntityIds::AXOLOTL => "minecraft:axolotl",
-		EntityIds::GOAT => "minecraft:goat",
-		EntityIds::GLOW_SQUID => "minecraft:glow_squid",
-		EntityIds::PILLAGER => "minecraft:pillager",
-
-		//OLD
 		EntityIds::NPC => "minecraft:npc",
 		EntityIds::PLAYER => "minecraft:player",
 		EntityIds::WITHER_SKELETON => "minecraft:wither_skeleton",
@@ -147,15 +140,7 @@ class AddActorPacket extends DataPacket{
 		EntityIds::AGENT => "minecraft:agent",
 		EntityIds::ICE_BOMB => "minecraft:ice_bomb",
 		EntityIds::PHANTOM => "minecraft:phantom",
-		EntityIds::TRIPOD_CAMERA => "minecraft:tripod_camera",
-		EntityIds::RAVAGER => "minecraft:ravager",
-		EntityIds::FOX => "minecraft:fox",
-		EntityIds::BEE => "minecraft:bee",
-		EntityIds::STRIDER => "minecraft:strider",
-		EntityIds::PIGLIN => "minecraft:piglin",
-		EntityIds::HOGLIN => "minecraft:hoglin",
-		EntityIds::ZOGLIN => "minecraft:zoglin",
-
+		EntityIds::TRIPOD_CAMERA => "minecraft:tripod_camera"
 	];
 
 	/** @var int|null */

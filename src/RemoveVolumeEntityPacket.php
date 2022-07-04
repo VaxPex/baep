@@ -32,28 +32,21 @@ class RemoveVolumeEntityPacket extends DataPacket{
 
 	/** @var int */
 	private $entityNetId;
-	/** @var int */
-	private $dimension;
 
-	public static function create(int $entityNetId, int $dimension) : self{
+	public static function create(int $entityNetId) : self{
 		$result = new self;
 		$result->entityNetId = $entityNetId;
-		$result->dimension = $dimension;
 		return $result;
 	}
 
 	public function getEntityNetId() : int{ return $this->entityNetId; }
-	
-	public function getDimension() : int{ return $this->dimension; }
 
 	protected function decodePayload() : void{
 		$this->entityNetId = $this->getUnsignedVarInt();
-		$this->dimension = $this->getVarInt();
 	}
 
 	protected function encodePayload() : void{
 		$this->putUnsignedVarInt($this->entityNetId);
-		$this->writeVarInt($this->dimension);
 	}
 
 	public function handle(NetworkSession $handler) : bool{

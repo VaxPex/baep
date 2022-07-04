@@ -27,7 +27,6 @@ namespace pocketmine\network\mcpe\protocol;
 
 use pocketmine\math\Vector3;
 use pocketmine\nbt\NetworkLittleEndianNBTStream;
-use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\network\mcpe\NetworkSession;
 use pocketmine\network\mcpe\protocol\types\BlockPaletteEntry;
 use pocketmine\network\mcpe\protocol\types\EducationEditionOffer;
@@ -40,6 +39,7 @@ use pocketmine\network\mcpe\protocol\types\MultiplayerGameVisibility;
 use pocketmine\network\mcpe\protocol\types\PlayerMovementSettings;
 use pocketmine\network\mcpe\protocol\types\PlayerPermissions;
 use pocketmine\network\mcpe\protocol\types\SpawnSettings;
+use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\utils\UUID;
 use function count;
 
@@ -184,11 +184,7 @@ class StartGamePacket extends DataPacket{
 	/** @var string */
 	public $serverSoftwareVersion;
 
-	public string $playerActorProperites;
-
 	public int $blockPaletteChecksum;
-
-	public UUID $worldTemplateId;
 
 	protected function decodePayload(){
 		$this->entityUniqueId = $this->getEntityUniqueId();
@@ -273,9 +269,7 @@ class StartGamePacket extends DataPacket{
 		$this->multiplayerCorrelationId = $this->getString();
 		$this->enableNewInventorySystem = $this->getBool();
 		$this->serverSoftwareVersion = $this->getString();
-		// $this->playerActorProperites = new NetworkLittleEndianNBTStream($this->getNbtCompoundRoot());
 		$this->blockPaletteChecksum = $this->getLLong();
-		$this->worldTemplateId = $this->getUUID();
 	}
 
 	protected function encodePayload(){
@@ -357,9 +351,9 @@ class StartGamePacket extends DataPacket{
 		$this->putString($this->multiplayerCorrelationId);
 		$this->putBool($this->enableNewInventorySystem);
 		$this->putString($this->serverSoftwareVersion);
-		$this->put($this->playerActorProperites);
+		$this->put((new NetworkLittleEndianNBTStream())->write(new CompoundTag()));
 		$this->putLLong($this->blockPaletteChecksum);
-		$this->putUUID($this->worldTemplateId);
+		$this->putUUID(UUID::fromBinary(str_repeat("\x00", 16), 0));
 	}
 
 	public function handle(NetworkSession $session) : bool{

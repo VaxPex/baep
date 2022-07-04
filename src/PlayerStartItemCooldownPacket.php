@@ -26,7 +26,6 @@ namespace pocketmine\network\mcpe\protocol;
 use pocketmine\network\mcpe\NetworkSession;
 
 class PlayerStartItemCooldownPacket extends DataPacket{
-
 	public const NETWORK_ID = ProtocolInfo::PLAYER_START_ITEM_COOLDOWN_PACKET;
 
 	private string $itemCategory;
@@ -56,7 +55,7 @@ class PlayerStartItemCooldownPacket extends DataPacket{
 		$this->putVarInt($this->cooldownTicks);
 	}
 
-	public function handle(NetworkSession $handler): bool{
-		return $handler->handlePlayerStartItemCooldown();
+	public function handle(NetworkSession $handler) : bool{
+		return $handler->handlePlayerStartItemCooldown($this);
 	}
 }

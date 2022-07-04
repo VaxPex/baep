@@ -373,21 +373,6 @@ class LevelSoundEventPacket extends DataPacket{
 	/** @var bool */
 	public $disableRelativeVolume = false;
 
-	public static function create(int $sound, ?Vector3 $pos, int $extraData = -1, string $entityType = ":", bool $isBabyMob = false, bool $disableRelativeVolume = false) : self{
-		$result = new self;
-		$result->sound = $sound;
-		$result->extraData = $extraData;
-		$result->position = $pos;
-		$result->entityType = $entityType;
-		$result->isBabyMob = $isBabyMob;
-		$result->disableRelativeVolume = $disableRelativeVolume;
-		return $result;
-	}
-
-	public static function nonActorSound(int $sound, Vector3 $position, bool $disableRelativeVolume, int $extraData = -1) : self{
-		return self::create($sound, $position, $extraData, ":", false, $disableRelativeVolume);
-	}
-
 	protected function decodePayload(){
 		$this->sound = $this->getUnsignedVarInt();
 		$this->position = $this->getVector3();

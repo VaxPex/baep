@@ -25,31 +25,31 @@ namespace pocketmine\network\mcpe\protocol\types;
 
 use pocketmine\network\mcpe\NetworkBinaryStream;
 
-final class DimensionData {
+final class SubChunkPosition{
 
 	public function __construct(
-		private int $maxHeight,
-		private int $minHeight,
-		private int $generator
+		private int $x,
+		private int $y,
+		private int $z,
 	){}
 
-	public function getMaxHeight() : int{ return $this->maxHeight; }
+	public function getX() : int{ return $this->x; }
 
-	public function getMinHeight() : int{ return $this->minHeight; }
+	public function getY() : int{ return $this->y; }
 
-	public function getGenerator() : int{ return $this->generator; }
+	public function getZ() : int{ return $this->z; }
 
-	public static function read(NetworkBinaryStream $stream) : self{
-		$maxHeight = $stream->getVarInt();
-		$minHeight = $stream->getVarInt();
-		$generator = $stream->getVarInt();
+	public static function read(NetworkBinaryStream $in) : self{
+		$x = $in->getVarInt();
+		$y = $in->getVarInt();
+		$z = $in->getVarInt();
 
-		return new self($maxHeight, $minHeight, $generator);
+		return new self($x, $y, $z);
 	}
 
-	public function write(NetworkBinaryStream $stream) : void{
-		$stream->putVarInt($this->maxHeight);
-		$stream->putVarInt($this->minHeight);
-		$stream->putVarInt($this->generator);
+	public function write(NetworkBinaryStream $out) : void{
+		$out->putVarInt($this->x);
+		$out->putVarInt($this->y);
+		$out->putVarInt($this->z);
 	}
 }

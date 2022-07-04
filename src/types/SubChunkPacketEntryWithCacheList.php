@@ -23,13 +23,17 @@ declare(strict_types=1);
 
 namespace pocketmine\network\mcpe\protocol\types;
 
-final class InteractionMode{
+final class SubChunkPacketEntryWithCacheList{
 
-	private function __construct(){
-		//NOOP
-	}
+	/**
+	 * @param SubChunkPacketEntryWithCache[] $entries
+	 */
+	public function __construct(
+		private array $entries
+	){}
 
-	public const TOUCH = 0;
-	public const CROSSHAIR = 1;
-	public const CLASSIC = 2; //???
+	/**
+	 * @return SubChunkPacketEntryWithCache[]
+	 */
+	public function getEntries() : array{ return $this->entries; }
 }

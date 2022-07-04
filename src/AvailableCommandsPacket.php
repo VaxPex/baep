@@ -357,7 +357,7 @@ class AvailableCommandsPacket extends DataPacket{
 					}
 					$type = self::ARG_FLAG_POSTFIX | $key;
 				}else{
-					$type = self::ARG_FLAG_VALID | $parameter->paramType;
+					$type = $parameter->paramType;
 				}
 
 				$this->putLInt($type);

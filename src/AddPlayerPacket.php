@@ -63,8 +63,8 @@ class AddPlayerPacket extends DataPacket{
 	 * @phpstan-var array<int, array{0: int, 1: mixed}>
 	 */
 	public $metadata = [];
-	/** @var int */
-	public $gameType = 0;
+
+	public int $gameMode = 0;
 
 	//TODO: adventure settings stuff
 	/** @var int */
@@ -101,7 +101,7 @@ class AddPlayerPacket extends DataPacket{
 		$this->yaw = $this->getLFloat();
 		$this->headYaw = $this->getLFloat();
 		$this->item = ItemStackWrapper::read($this);
-		$this->gameType = $this->getVarInt();
+		$this->gameMode = $this->getVarInt();
 		$this->metadata = $this->getEntityMetadata();
 
 		$this->uvarint1 = $this->getUnsignedVarInt();
@@ -133,7 +133,7 @@ class AddPlayerPacket extends DataPacket{
 		$this->putLFloat($this->yaw);
 		$this->putLFloat($this->headYaw ?? $this->yaw);
 		$this->item->write($this);
-		$this->putVarInt($this->gameType);
+		$this->putVarInt($this->gameMode);
 		$this->putEntityMetadata($this->metadata);
 
 		$this->putUnsignedVarInt($this->uvarint1);
