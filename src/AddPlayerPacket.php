@@ -70,9 +70,6 @@ class AddPlayerPacket extends DataPacket{
 	/** @var AdventureSettingsPacket */
 	public $adventureSettingsPacket;
 
-	/** @var int */
-	public $userID = 0;
-
 	/** @var EntityLink[] */
 	public $links = [];
 
@@ -99,8 +96,6 @@ class AddPlayerPacket extends DataPacket{
 		$this->adventureSettingsPacket = new AdventureSettingsPacket($this->buffer);
 		$this->adventureSettingsPacket->decodePayload();
 
-		$this->userID = $this->getLLong();
-
 		$linkCount = $this->getUnsignedVarInt();
 		for($i = 0; $i < $linkCount; ++$i){
 			$this->links[$i] = $this->getEntityLink();
@@ -126,8 +121,6 @@ class AddPlayerPacket extends DataPacket{
 		$this->putEntityMetadata($this->metadata);
 
 		$this->adventureSettingsPacket->encodePayload();
-
-		$this->putLLong($this->userID);
 
 		$this->putUnsignedVarInt(count($this->links));
 		foreach($this->links as $link){
