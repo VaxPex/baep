@@ -31,7 +31,6 @@ use pocketmine\network\mcpe\protocol\types\DeviceOS;
 use pocketmine\network\mcpe\protocol\types\EntityLink;
 use pocketmine\network\mcpe\protocol\types\inventory\ItemStackWrapper;
 use pocketmine\utils\UUID;
-use pocketmine\network\mcpe\protocol\AdventureSettingsPacket;
 use function count;
 
 class AddPlayerPacket extends DataPacket{
@@ -67,11 +66,20 @@ class AddPlayerPacket extends DataPacket{
 	/** @var int */
 	public $gameType = 0;
 
-	/** @var AdventureSettingsPacket */
-	public $adventureSettingsPacket;
+	//TODO: adventure settings stuff
+	/** @var int */
+	public $uvarint1 = 0;
+	/** @var int */
+	public $uvarint2 = 0;
+	/** @var int */
+	public $uvarint3 = 0;
+	/** @var int */
+	public $uvarint4 = 0;
+	/** @var int */
+	public $uvarint5 = 0;
 
 	/** @var int */
-	public $userID = 0;
+	public $long1 = 0;
 
 	/** @var EntityLink[] */
 	public $links = [];
@@ -96,10 +104,13 @@ class AddPlayerPacket extends DataPacket{
 		$this->gameType = $this->getVarInt();
 		$this->metadata = $this->getEntityMetadata();
 
-		$this->adventureSettingsPacket = new AdventureSettingsPacket($this->buffer);
-		$this->adventureSettingsPacket->decodePayload();
+		$this->uvarint1 = $this->getUnsignedVarInt();
+		$this->uvarint2 = $this->getUnsignedVarInt();
+		$this->uvarint3 = $this->getUnsignedVarInt();
+		$this->uvarint4 = $this->getUnsignedVarInt();
+		$this->uvarint5 = $this->getUnsignedVarInt();
 
-		$this->userID = $this->getLLong();
+		$this->long1 = $this->getLLong();
 
 		$linkCount = $this->getUnsignedVarInt();
 		for($i = 0; $i < $linkCount; ++$i){
@@ -125,9 +136,13 @@ class AddPlayerPacket extends DataPacket{
 		$this->putVarInt($this->gameType);
 		$this->putEntityMetadata($this->metadata);
 
-		$this->adventureSettingsPacket->encodePayload();
+		$this->putUnsignedVarInt($this->uvarint1);
+		$this->putUnsignedVarInt($this->uvarint2);
+		$this->putUnsignedVarInt($this->uvarint3);
+		$this->putUnsignedVarInt($this->uvarint4);
+		$this->putUnsignedVarInt($this->uvarint5);
 
-		$this->putLLong($this->userID);
+		$this->putLLong($this->long1);
 
 		$this->putUnsignedVarInt(count($this->links));
 		foreach($this->links as $link){
