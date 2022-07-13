@@ -79,6 +79,7 @@ class StartGamePacket extends DataPacket{
 	public $spawnZ;
 	/** @var bool */
 	public $hasAchievementsDisabled = true;
+	public bool $isEditorMode = false;
 	/** @var int */
 	public $time = -1;
 	/** @var int */
@@ -208,6 +209,7 @@ class StartGamePacket extends DataPacket{
 		$this->difficulty = $this->getVarInt();
 		$this->getBlockPosition($this->spawnX, $this->spawnY, $this->spawnZ);
 		$this->hasAchievementsDisabled = $this->getBool();
+		$this->isEditorMode = $this->getBool();
 		$this->time = $this->getVarInt();
 		$this->eduEditionOffer = $this->getVarInt();
 		$this->hasEduFeaturesEnabled = $this->getBool();
@@ -296,6 +298,7 @@ class StartGamePacket extends DataPacket{
 		$this->putVarInt($this->difficulty);
 		$this->putBlockPosition($this->spawnX, $this->spawnY, $this->spawnZ);
 		$this->putBool($this->hasAchievementsDisabled);
+		$this->putBool($this->isEditorMode);
 		$this->putVarInt($this->time);
 		$this->putVarInt($this->eduEditionOffer);
 		$this->putBool($this->hasEduFeaturesEnabled);
