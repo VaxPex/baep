@@ -65,16 +65,15 @@ class AddPlayerPacket extends DataPacket{
 	public $metadata = [];
 	/** @var int */
 	public $gameType = 0;
-	public $playerPermission = 0;
-	public $commandPermission = 0;
+	public $playerPermission = 1 >> 1;
+	public $commandPermission = 1 >> 1;
 	public $abilityLayersSize = 2 >> 1;
 	public $baseLayerType = 2 >> 1;
-	public $abilitiesSet = 0x3ffff; //all
+	public $abilitiesSet = (1 << 18) - 1; //all
 	public $abilityValues = (1 << 6) - 1; //survival
 	public $flyingSpeed = 0.1;
 	public $walkingSpeed = 0.05;
 	
-	//TODO: adventure settings stuff
 	/** @var EntityLink[] */
 	public $links = [];
 
