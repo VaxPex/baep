@@ -65,13 +65,21 @@ class AddPlayerPacket extends DataPacket{
 	public $metadata = [];
 	/** @var int */
 	public $gameType = 0;
+	public $playerPermission = 0;
+	public $commandPermission = 0;
+	public $abilityLayersSize = 2 >> 1;
+	public $baseLayerType = 2 >> 1;
+	public $abilitiesSet = 0x3ffff; //all
+	public $abilityValues = (1 << 6) - 1; //survival
+	public $flyingSpeed = 0.1;
+	public $walkingSpeed = 0.05;
 	
 	//TODO: adventure settings stuff
 	/** @var EntityLink[] */
 	public $links = [];
 
 	/** @var string */
-	public $deviceId = ""; //TODO: fill player's device ID (???)
+	public $deviceID = ""; //TODO: fill player's device ID (???)
 	/** @var int */
 	public $buildPlatform = DeviceOS::UNKNOWN;
 
@@ -89,13 +97,21 @@ class AddPlayerPacket extends DataPacket{
 		$this->gameType = $this->getVarInt();
 		$this->metadata = $this->getEntityMetadata();
 		$this->entityUniqueId = $this->getEntityUniqueId();
+		$this->playerPermission = $this->getUnsignedVarInt();
+		$this->commandPermission = $this->getUnsignedVarInt();
+		$this->abilityLayersSize = $this->getUnsignedVarInt();
+		$this->baseLayerType = $this->getLShort();
+		$this->abilitiesSet = $this->getLInt();
+		$this->abilityValues = $this->getLInt();
+		$this->flyingSpeed = $this->getLFloat();
+		$this->walkingSpeed = $this->getLFloat();
 
 		$linkCount = $this->getUnsignedVarInt();
 		for($i = 0; $i < $linkCount; ++$i){
 			$this->links[$i] = $this->getEntityLink();
 		}
 
-		$this->deviceId = $this->getString();
+		$this->deviceID = $this->getString();
 		$this->buildPlatform = $this->getLInt();
 	}
 
@@ -113,21 +129,21 @@ class AddPlayerPacket extends DataPacket{
 		$this->putVarInt($this->gameType);
 		$this->putEntityMetadata($this->metadata);
 		$this->putLLong($this->entityUniqueId ?? $this->entityRuntimeId);// targetActorUniqueId
-		$this->putUnsignedVarInt(0); // playerPermission
-		$this->putUnsignedVarInt(0); // commandPermission
- 		$this->putUnsignedVarInt(1); // abilityLayers size
-		$this->putLShort(1); // BASE layer type
- 		$this->putLInt(262143); // abilitiesSet (all)
-		$this->putLInt(63); // abilityValues  (survival)
-		$this->putLFloat(0.1); // flySpeed
-		$this->putLFloat(0.05); // walkSpeed
+		$this->putUnsignedVarInt($this->playerPermission);
+		$this->putUnsignedVarInt($this->commandPermission);
+ 		$this->putUnsignedVarInt($this->abilityLayersSize);
+		$this->putLShort($this->baseLayerType);
+ 		$this->putLInt($this->abilitiesSet);
+		$this->putLInt($this->abilityValues);
+		$this->putLFloat($this->flyingSpeed);
+		$this->putLFloat($this->walkingSpeed);
 
 		$this->putUnsignedVarInt(count($this->links));
 		foreach($this->links as $link){
 			$this->putEntityLink($link);
 		}
 
-		$this->putString($this->deviceId);
+		$this->putString($this->deviceID);
 		$this->putLInt($this->buildPlatform);
 	}
 
